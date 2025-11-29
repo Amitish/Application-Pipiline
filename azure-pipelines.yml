@@ -7,3 +7,15 @@ steps:
   inputs:
     targetType: 'inline'
     script: 'Write-Host "Hello World"'
+
+- task: PowerShell@2
+  displayName: npm install
+  inputs:
+    targetType: 'inline'
+    script: 'npm install'
+
+- task: PowerShell@2
+  displayName: npm run build
+  inputs:
+    targetType: 'inline'
+    script: 'npm build'
