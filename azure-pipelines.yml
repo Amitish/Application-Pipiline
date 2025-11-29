@@ -31,7 +31,7 @@ steps:
     replaceExistingArchive: true
 
 
-# ZIP ------> Converts folder into file 
+# ZIP ------> Converts folder into file ...
 
 
 - task: AzureCLI@2
