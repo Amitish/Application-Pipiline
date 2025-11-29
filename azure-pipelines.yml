@@ -1,21 +1,49 @@
 trigger: none
 
-pool: mera-agent-pool
+pool:
+  mera-agent-pool
 
 steps:
-- task: PowerShell@2
+- task: NodeTool@0
   inputs:
-    targetType: 'inline'
-    script: 'Write-Host "Hello World"'
+    versionSpec: '18.x'
+  displayName: "Install NodeJS"
 
 - task: PowerShell@2
-  displayName: npm install
+  displayName: "NPM Install"
   inputs:
     targetType: 'inline'
     script: 'npm install'
 
 - task: PowerShell@2
-  displayName: npm run build
+  displayName: "NPM Build"
   inputs:
     targetType: 'inline'
     script: 'npm run build'
+
+- task: ArchiveFiles@2
+  displayName: "Zip Build Folder"
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/build/'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(System.DefaultWorkingDirectory)/build.zip'
+    replaceExistingArchive: true
+
+
+# ZIP ------> Converts folder into file 
+
+
+- task: AzureCLI@2
+  displayName: "Upload to Storage Account"
+  inputs:
+    azureSubscription: 'new-service'
+    scriptType: 'ps'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az storage blob upload `
+        --account-name appstgmine `
+        --container-name appctgmine `
+        --name build.zip `
+        --file "$(System.DefaultWorkingDirectory)/build.zip" `
+        --auth-mode login
