@@ -66,7 +66,7 @@ stages:
 
 
 - stage: lint
-  displayName: Linting Stage
+  displayName: Linting Stage (Javascript Biome)
   # dependsOn: build
   jobs:
   - job: 
