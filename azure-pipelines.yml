@@ -5,38 +5,38 @@ pool:
   mera-agent-pool
 
 stages:
-- stage: build
-  displayName: Build Stage
-  jobs:
-  - job:
-    steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '18.x'
-      displayName: "Install NodeJS"
+# - stage: build
+#   displayName: Build Stage
+#   jobs:
+#   - job:
+#     steps:
+#     - task: NodeTool@0
+#       inputs:
+#         versionSpec: '18.x'
+#       displayName: "Install NodeJS"
 
-    - task: PowerShell@2
-      displayName: NPM Install
-      inputs:
-        targetType: 'inline'
-        script: 'npm install'
+#     - task: PowerShell@2
+#       displayName: NPM Install
+#       inputs:
+#         targetType: 'inline'
+#         script: 'npm install'
 
-    - task: PowerShell@2
-      displayName: "NPM Build"
-      inputs:
-        targetType: 'inline'
-        script: 'npm run build'
+#     - task: PowerShell@2
+#       displayName: "NPM Build"
+#       inputs:
+#         targetType: 'inline'
+#         script: 'npm run build'
 
-    # ZIP ------> Converts folder into file ...
+#     # ZIP ------> Converts folder into file ...
 
-    - task: ArchiveFiles@2
-      displayName: Zip Build Folder
-      inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/build/'
-        includeRootFolder: true
-        archiveType: 'zip'
-        archiveFile: '$(System.DefaultWorkingDirectory)/build.zip'
-        replaceExistingArchive: true
+#     - task: ArchiveFiles@2
+#       displayName: Zip Build Folder
+#       inputs:
+#         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/build/'
+#         includeRootFolder: true
+#         archiveType: 'zip'
+#         archiveFile: '$(System.DefaultWorkingDirectory)/build.zip'
+#         replaceExistingArchive: true
 
     # One way is using < Storage Account >
     # But it doesn't provide proper versioning solution . . . 
@@ -57,12 +57,12 @@ stages:
 
     # We prefer Artifactory Hub since it provides versioning . . . Publish Pipeline Artifacts
 
-    - task: PublishPipelineArtifact@1
-      displayName: Upload to Artifactory Hub
-      inputs:
-        targetPath: '$(System.DefaultWorkingDirectory)/build/'
-        artifact: 'final-artifacts'
-        publishLocation: 'pipeline'
+    # - task: PublishPipelineArtifact@1
+    #   displayName: Upload to Artifactory Hub
+    #   inputs:
+    #     targetPath: '$(System.DefaultWorkingDirectory)/build/'
+    #     artifact: 'final-artifacts'
+    #     publishLocation: 'pipeline'
 
 
 - stage: lint
@@ -81,4 +81,3 @@ stages:
           
           $(Agent.ToolsDirectory)/biome.exe lint
           
-  
