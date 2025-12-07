@@ -5,70 +5,80 @@ pool:
   mera-agent-pool
 
 stages:
-- stage: build
-  displayName: Build Stage
-  jobs:
-  - job:
-    steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '18.x'
-      displayName: "Install NodeJS"
-
-    - task: PowerShell@2
-      displayName: NPM Install
-      inputs:
-        targetType: 'inline'
-        script: 'npm install'
-
-    - task: PowerShell@2
-      displayName: "NPM Build"
-      inputs:
-        targetType: 'inline'
-        script: 'npm run build'
-
-    # ZIP ------> Converts folder into file ...
-
-    - task: ArchiveFiles@2
-      displayName: Zip Build Folder
-      inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/build/'
-        includeRootFolder: true
-        archiveType: 'zip'
-        archiveFile: '$(System.DefaultWorkingDirectory)/build.zip'
-        replaceExistingArchive: true
-
-    # One way is using < Storage Account >
-    # But it doesn't provide proper versioning solution . . . 
-
-    # - task: AzureCLI@2
-    #   displayName: Upload to Storage Account
-    #   inputs:
-    #     azureSubscription: 'new-service'
-    #     scriptType: 'ps'
-    #     scriptLocation: 'inlineScript'
-    #     inlineScript: |
-    #       az storage blob upload `
-    #         --account-name appstgmine `
-    #         --container-name appctgmine `
-    #         --name build.zip `
-    #         --file "$(System.DefaultWorkingDirectory)/build.zip" `
-    #         --auth-mode login
-
-    # We prefer Artifactory Hub since it provides versioning . . . Publish Pipeline Artifacts
-
-    - task: PublishPipelineArtifact@1
-      displayName: Upload to Artifactory Hub
-      inputs:
-        targetPath: '$(System.DefaultWorkingDirectory)/build.zip'
-        artifact: 'final-artifacts'
-        publishLocation: 'pipeline'
-
-
-# - stage: lint
-#   displayName: Linting Stage
-#   dependsOn: build
+# - stage: build
+#   displayName: Build Stage
 #   jobs:
-#   - job: 
+#   - job:
 #     steps:
-    
+#     - task: NodeTool@0
+#       inputs:
+#         versionSpec: '18.x'
+#       displayName: "Install NodeJS"
+
+#     - task: PowerShell@2
+#       displayName: NPM Install
+#       inputs:
+#         targetType: 'inline'
+#         script: 'npm install'
+
+#     - task: PowerShell@2
+#       displayName: "NPM Build"
+#       inputs:
+#         targetType: 'inline'
+#         script: 'npm run build'
+
+#     # ZIP ------> Converts folder into file ...
+
+#     - task: ArchiveFiles@2
+#       displayName: Zip Build Folder
+#       inputs:
+#         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/build/'
+#         includeRootFolder: true
+#         archiveType: 'zip'
+#         archiveFile: '$(System.DefaultWorkingDirectory)/build.zip'
+#         replaceExistingArchive: true
+
+#     # One way is using < Storage Account >
+#     # But it doesn't provide proper versioning solution . . . 
+
+#     # - task: AzureCLI@2
+#     #   displayName: Upload to Storage Account
+#     #   inputs:
+#     #     azureSubscription: 'new-service'
+#     #     scriptType: 'ps'
+#     #     scriptLocation: 'inlineScript'
+#     #     inlineScript: |
+#     #       az storage blob upload `
+#     #         --account-name appstgmine `
+#     #         --container-name appctgmine `
+#     #         --name build.zip `
+#     #         --file "$(System.DefaultWorkingDirectory)/build.zip" `
+#     #         --auth-mode login
+
+#     # We prefer Artifactory Hub since it provides versioning . . . Publish Pipeline Artifacts
+
+#     - task: PublishPipelineArtifact@1
+#       displayName: Upload to Artifactory Hub
+#       inputs:
+#         targetPath: '$(System.DefaultWorkingDirectory)/build/'
+#         artifact: 'final-artifacts'
+#         publishLocation: 'pipeline'
+
+
+- stage: lint
+  displayName: Linting Stage
+  # dependsOn: build
+  jobs:
+  - job: 
+    steps:
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          Invoke-WebRequest `
+            -Uri "https://github.com/biomejs/biome/releases/download/%40biomejs%2Fbiome%402.3.8/biome-win32-x64.exe" `
+            -OutFile "$(Agent.ToolsDirectory)/biome.exe"
+          
+          $(Agent.ToolsDirectory)/biome.exe lint
+          
+          $(System.DefaultWorkingDirectory)/src
