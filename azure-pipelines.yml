@@ -81,4 +81,4 @@ stages:
           
           $(Agent.ToolsDirectory)/biome.exe lint
           
-          $(System.DefaultWorkingDirectory)/src
+  
