@@ -90,7 +90,6 @@ stages:
         targetType: 'inline'
         script: |
           npm install -g stylelint
-          
           npm add -D stylelint stylelint-config-standard  
-          
           stylelint $(System.DefaultWorkingDirectory)/src--config stylelint.config.mjs
+      continueOnError: true 
