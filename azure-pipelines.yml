@@ -1,4 +1,5 @@
-trigger: none
+trigger:
+- develop
 
 pool:
   mera-agent-pool
@@ -62,3 +63,12 @@ stages:
         targetPath: '$(System.DefaultWorkingDirectory)/build.zip'
         artifact: 'final-artifacts'
         publishLocation: 'pipeline'
+
+
+# - stage: lint
+#   displayName: Linting Stage
+#   dependsOn: build
+#   jobs:
+#   - job: 
+#     steps:
+    
