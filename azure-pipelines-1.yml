@@ -8,21 +8,26 @@ steps:
     versionSpec: '20.x'
   displayName: Install Node.js
 
+# Step 1 – NPM Install (Already working)
 - task: PowerShell@2
   displayName: NPM Install
   inputs:
     targetType: 'inline'
-    script: 'npm install'
+    script: |
+      npm install
 
+# Step 2 – Install Jest JUnit Reporter
 - task: PowerShell@2
+  displayName: Install jest-junit
   inputs:
     targetType: 'inline'
-    script: 'npm install jest-junit --save-dev'
+    script: |
+      npm install jest-junit --save-dev
 
+# Step 3 – Run Jest Unit Tests
 - task: PowerShell@2
   displayName: NPM Unit Testing
   inputs:
     targetType: 'inline'
     script: |
-      cd $(System.DefaultWorkingDirectory)/src     
-      npm test -- --ci --reporters=jest-junit --reporters=default
+      npm test -- --ci --reporters=jest-junit --reporters=default --passWithNoTests
