@@ -1,0 +1,21 @@
+trigger: none
+
+pool: mera-agent-pool
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '20.x'
+  displayName: Install Node.js
+
+- task: PowerShell@2
+  displayName: NPM Install
+  inputs:
+    targetType: 'inline'
+    script: 'npm install'
+
+- task: PowerShell@2
+  displayName: NPM Unit Testing
+  inputs:
+    targetType: 'inline'
+    script: 'npm test -- --ci --reporters=jest-junit --reporters=default'
