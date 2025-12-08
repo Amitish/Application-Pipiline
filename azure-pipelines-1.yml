@@ -23,4 +23,6 @@ steps:
   displayName: NPM Unit Testing
   inputs:
     targetType: 'inline'
-    script: 'npm test -- --ci --reporters=jest-junit --reporters=default'
+    script: |
+      cd $(System.DefaultWorkingDirectory)/src     
+      npm test -- --ci --reporters=jest-junit --reporters=default
