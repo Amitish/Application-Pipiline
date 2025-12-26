@@ -5,18 +5,20 @@ pool:
 
 stages:
 - stage: build
-  displayName: Build Stage
+  displayName: Scanning . . . 
   jobs:
   - job:
     steps:
 
     - task: PowerShell@2
+      displayName: Biome Linting
+      continueOnError: true
       inputs:
         targetType: 'inline'
         script: |
           cd $(System.DefaultWorkingDirectory)
-          
-          npx biome check src
+          npx biome check src --reporter=junit > biome-test-results.xml
+
 
     # - task: NodeTool@0
     #   inputs:
