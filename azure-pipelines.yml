@@ -17,7 +17,7 @@ stages:
         targetType: 'inline'
         script: |
           cd $(System.DefaultWorkingDirectory)
-          npx biome check src --reporter=junit > biome-test-results.xml
+          npx biome check src | Out-File -Encoding utf8 biome-report.txt
 
 
     # - task: NodeTool@0
