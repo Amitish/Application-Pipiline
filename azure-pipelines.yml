@@ -14,9 +14,9 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          cd $(System.DefaultWorkingDirectory)/src
+          cd $(System.DefaultWorkingDirectory)
           
-           biome check src
+          npx biome check src
 
     # - task: NodeTool@0
     #   inputs:
