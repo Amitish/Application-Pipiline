@@ -22,7 +22,7 @@ stages:
     - task: PublishPipelineArtifact@1
       displayName: Biome Report
       inputs:
-        targetPath: '(System.DefaultWorkingDirectory)/biome_report.txt'
+        targetPath: '$(System.DefaultWorkingDirectory)/biome_report.txt'
         artifact: 'Biome_report'
         publishLocation: 'pipeline'
 
