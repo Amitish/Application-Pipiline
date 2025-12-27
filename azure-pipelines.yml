@@ -26,6 +26,22 @@ stages:
     #     artifact: 'Biome_report'
     #     publishLocation: 'pipeline'
 
+    - task: PowerShell@2
+      displayName: Stylelint Linting
+      continueOnError: true
+      inputs:
+        targetType: 'inline'
+        script: |
+          cd $(System.DefaultWorkingDirectory)
+          npx stylelint "src/**/*.{css,scss}" | Out-File -Encoding utf8 stylelint_report.txt
+
+    - task: PublishPipelineArtifact@1
+      displayName: Stylelint Report
+      inputs:
+        targetPath: '$(System.DefaultWorkingDirectory)'
+        artifact: 'stylelint_report'
+        publishLocation: 'pipeline'
+
 
     # - task: PowerShell@2
     #   inputs:
@@ -35,14 +51,6 @@ stages:
     #       npm install -g stylelint-config-standard        
     #       stylelint $(System.DefaultWorkingDirectory)/src --config stylelint.config.mjs
 
-    - task: PowerShell@2
-      displayName: Stylelint Linting
-      continueOnError: true
-      inputs:
-        targetType: 'inline'
-        script: |
-          cd $(System.DefaultWorkingDirectory)
-          npx stylelint "src/**/*.{css,scss}" | Out-File -Encoding utf8 stylelint_report.txt
    
 
     # - task: NodeTool@0
