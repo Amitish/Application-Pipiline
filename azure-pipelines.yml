@@ -4,45 +4,45 @@ pool:
   mera-pool
 
 stages:
-- stage: scan
-  displayName: SAST Scanning 
-  jobs:
-  - job:
-    steps:
+# - stage: scan
+#   displayName: SAST Scanning 
+#   jobs:
+#   - job:
+#     steps:
 
-# <1.>........................ SONARQUBE ...........................................
+# # <1.>........................ SONARQUBE ...........................................
 
-    - task: PowerShell@2
-      displayName: SonarQube Scanning (Community Edition)
-      inputs:
-        targetType: 'inline'
-        script: 'sonar-scanner  -D sonar.host.url=http://localhost:9000   -D sonar.token=sqp_760b91509f98e00beaa5857ce2a5d03aee69a405   -D sonar.projectKey=Application'
+#     - task: PowerShell@2
+#       displayName: SonarQube Scanning (Community Edition)
+#       inputs:
+#         targetType: 'inline'
+#         script: 'sonar-scanner  -D sonar.host.url=http://localhost:9000   -D sonar.token=sqp_760b91509f98e00beaa5857ce2a5d03aee69a405   -D sonar.projectKey=Application'
 
 
-- stage: linting
-  dependsOn: scan
-  displayName: Linting
-  jobs:
-  - job:
-    steps:
+# - stage: linting
+#   dependsOn: scan
+#   displayName: Linting
+#   jobs:
+#   - job:
+#     steps:
 
-# <1.>........................ BIOME ...........................................
+# # <1.>........................ BIOME ...........................................
 
-    - task: PowerShell@2
-      displayName: Biome Linting
-      continueOnError: true
-      inputs:
-        targetType: 'inline'
-        script: |
-          cd $(System.DefaultWorkingDirectory)
-          npx biome check src | Out-File -Encoding utf8 biome_report.txt
+#     - task: PowerShell@2
+#       displayName: Biome Linting
+#       continueOnError: true
+#       inputs:
+#         targetType: 'inline'
+#         script: |
+#           cd $(System.DefaultWorkingDirectory)
+#           npx biome check src | Out-File -Encoding utf8 biome_report.txt
 
-    - task: PublishPipelineArtifact@1
-      displayName: Biome Report
-      inputs:
-        targetPath: '$(System.DefaultWorkingDirectory)/biome_report.txt'
-        artifact: 'Biome_report'
-        publishLocation: 'pipeline'
+#     - task: PublishPipelineArtifact@1
+#       displayName: Biome Report
+#       inputs:
+#         targetPath: '$(System.DefaultWorkingDirectory)/biome_report.txt'
+#         artifact: 'Biome_report'
+#         publishLocation: 'pipeline'
 
 
 # <2.>........................ STYLELINT ...........................................
@@ -103,12 +103,21 @@ stages:
     #       yamllint . | Out-File -Encoding utf8 yamllint_report.txt
 
 
-# - stage: testing
-#   displayName: Unit Testing
-#   jobs:
-#   - job:
-#     steps:
+# <1.>........................ JEST UNIT TESTING ...........................................
 
+- stage: testing
+  displayName: Unit Testing
+  jobs:
+  - job:
+    steps:
+
+    - task: PowerShell@2
+      displayName: Run React Jest Tests
+      inputs:
+        targetType: 'inline'
+        script: |
+          cd $(System.DefaultWorkingDirectory)
+          npx jest --ci --reporters=default --reporters=jest-junit
 
 
 
