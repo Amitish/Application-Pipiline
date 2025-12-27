@@ -10,6 +10,8 @@ stages:
   - job:
     steps:
 
+# ........................ BIOME ...........................................
+
     # - task: PowerShell@2
     #   displayName: Biome Linting
     #   continueOnError: true
@@ -25,6 +27,9 @@ stages:
     #     targetPath: '$(System.DefaultWorkingDirectory)/biome_report.txt'
     #     artifact: 'Biome_report'
     #     publishLocation: 'pipeline'
+
+
+# ........................ STYLELINT ...........................................
 
     - task: PowerShell@2
       displayName: Stylelint Linting
@@ -43,6 +48,19 @@ stages:
         publishLocation: 'pipeline'
 
 
+# ........................ MARKDWON ...........................................
+
+    - task: PowerShell@2
+      displayName: Markdown Linting
+      continueOnError: true
+      inputs:
+        targetType: 'inline'
+        script: |
+          cd $(System.DefaultWorkingDirectory)
+          npx markdownlint "**/*.md" | Out-File -Encoding utf8 markdown_report.txt
+
+
+
     # - task: PowerShell@2
     #   inputs:
     #     targetType: 'inline'
@@ -51,7 +69,15 @@ stages:
     #       npm install -g stylelint-config-standard        
     #       stylelint $(System.DefaultWorkingDirectory)/src --config stylelint.config.mjs
 
-   
+    # - task: PowerShell@2
+    #   continueOnError: true
+    #   displayName: Lint Markdown(markdownlint)      
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       npm install -g markdownlint-cli      
+    #       markdownlint $(System.DefaultWorkingDirectory)/
+    
 
     # - task: NodeTool@0
     #   inputs:
