@@ -10,21 +10,31 @@ stages:
   - job:
     steps:
 
+    # - task: PowerShell@2
+    #   displayName: Biome Linting
+    #   continueOnError: true
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       cd $(System.DefaultWorkingDirectory)
+    #       npx biome check src | Out-File -Encoding utf8 biome_report.txt
+
+    # - task: PublishPipelineArtifact@1
+    #   displayName: Biome Report
+    #   inputs:
+    #     targetPath: '$(System.DefaultWorkingDirectory)/biome_report.txt'
+    #     artifact: 'Biome_report'
+    #     publishLocation: 'pipeline'
+
     - task: PowerShell@2
-      displayName: Biome Linting
+      displayName: Stylelint Linting
       continueOnError: true
       inputs:
         targetType: 'inline'
         script: |
           cd $(System.DefaultWorkingDirectory)
-          npx biome check src | Out-File -Encoding utf8 biome_report.txt
-
-    - task: PublishPipelineArtifact@1
-      displayName: Biome Report
-      inputs:
-        targetPath: '$(System.DefaultWorkingDirectory)/biome_report.txt'
-        artifact: 'Biome_report'
-        publishLocation: 'pipeline'
+          npx stylelint "**/*.{css,scss}" | Out-File -Encoding utf8 stylelint_report.txt
+   
 
     # - task: NodeTool@0
     #   inputs:
