@@ -10,7 +10,16 @@ stages:
   - job:
     steps:
 
-# <1>........................ BIOME ...........................................
+# <1.>........................ SONARQUBE ...........................................
+
+    - task: PowerShell@2
+      displayName: SonarQube Scan (Community Edition)
+      inputs:
+        targetType: 'inline'
+        script: 'sonar-scanner  -D sonar.host.url=http://localhost:9000   -D sonar.token=sqp_760b91509f98e00beaa5857ce2a5d03aee69a405   -D sonar.projectKey=Application'
+
+
+# <2.>........................ BIOME ...........................................
 
     # - task: PowerShell@2
     #   displayName: Biome Linting
@@ -29,7 +38,7 @@ stages:
     #     publishLocation: 'pipeline'
 
 
-# <2>........................ STYLELINT ...........................................
+# <3.>........................ STYLELINT ...........................................
 
     # - task: PowerShell@2
     #   displayName: Stylelint Linting
@@ -48,7 +57,7 @@ stages:
     #     publishLocation: 'pipeline'
 
 
-# <3>........................ MARKDWON ...........................................
+# <4.>........................ MARKDWON ...........................................
 
     # - task: PowerShell@2
     #   displayName: Markdown Linting
@@ -67,7 +76,7 @@ stages:
     #     publishLocation: 'pipeline'
 
 
-# <4>........................ YAMLLINT ...........................................
+# <5.>........................ YAMLLINT ...........................................
 
     - task: PowerShell@2
       displayName: Install yamllint
