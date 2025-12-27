@@ -20,6 +20,7 @@ stages:
 
 
 - stage: linting
+  dependsOn: scan
   displayName: Linting
   jobs:
   - job:
