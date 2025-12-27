@@ -17,7 +17,7 @@ stages:
         targetType: 'inline'
         script: |
           cd $(System.DefaultWorkingDirectory)
-          npx biome check src | Out-File -Encoding utf8 biome-biome_report.txt
+          npx biome check src | Out-File -Encoding utf8 biome_report.txt
 
     - task: PublishPipelineArtifact@1
       displayName: Biome Report
