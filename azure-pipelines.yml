@@ -32,8 +32,8 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          cd $(System.DefaultWorkingDirectory)/src
-          npx stylelint "**/*.{css,scss}" | Out-File -Encoding utf8 stylelint_report.txt
+          cd $(System.DefaultWorkingDirectory)
+          npx stylelint "src/**/*.{css,scss}" | Out-File -Encoding utf8 stylelint_report.txt
    
 
     # - task: NodeTool@0
