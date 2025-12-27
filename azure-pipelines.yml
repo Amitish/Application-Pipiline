@@ -32,7 +32,7 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          cd $(System.DefaultWorkingDirectory)
+          cd $(System.DefaultWorkingDirectory)/src
           npx stylelint "**/*.{css,scss}" | Out-File -Encoding utf8 stylelint_report.txt
    
 
