@@ -4,8 +4,8 @@ pool:
   mera-pool
 
 stages:
-- stage: build
-  displayName: Scanning . . . 
+- stage: scan
+  displayName: SAST Scanning 
   jobs:
   - job:
     steps:
@@ -13,32 +13,38 @@ stages:
 # <1.>........................ SONARQUBE ...........................................
 
     - task: PowerShell@2
-      displayName: SonarQube Scan (Community Edition)
+      displayName: SonarQube Scanning (Community Edition)
       inputs:
         targetType: 'inline'
         script: 'sonar-scanner  -D sonar.host.url=http://localhost:9000   -D sonar.token=sqp_760b91509f98e00beaa5857ce2a5d03aee69a405   -D sonar.projectKey=Application'
 
 
-# <2.>........................ BIOME ...........................................
+- stage: linting
+  displayName: Linting
+  jobs:
+  - job:
+    steps:
 
-    # - task: PowerShell@2
-    #   displayName: Biome Linting
-    #   continueOnError: true
-    #   inputs:
-    #     targetType: 'inline'
-    #     script: |
-    #       cd $(System.DefaultWorkingDirectory)
-    #       npx biome check src | Out-File -Encoding utf8 biome_report.txt
+# <1.>........................ BIOME ...........................................
 
-    # - task: PublishPipelineArtifact@1
-    #   displayName: Biome Report
-    #   inputs:
-    #     targetPath: '$(System.DefaultWorkingDirectory)/biome_report.txt'
-    #     artifact: 'Biome_report'
-    #     publishLocation: 'pipeline'
+    - task: PowerShell@2
+      displayName: Biome Linting
+      continueOnError: true
+      inputs:
+        targetType: 'inline'
+        script: |
+          cd $(System.DefaultWorkingDirectory)
+          npx biome check src | Out-File -Encoding utf8 biome_report.txt
+
+    - task: PublishPipelineArtifact@1
+      displayName: Biome Report
+      inputs:
+        targetPath: '$(System.DefaultWorkingDirectory)/biome_report.txt'
+        artifact: 'Biome_report'
+        publishLocation: 'pipeline'
 
 
-# <3.>........................ STYLELINT ...........................................
+# <2.>........................ STYLELINT ...........................................
 
     # - task: PowerShell@2
     #   displayName: Stylelint Linting
@@ -57,7 +63,7 @@ stages:
     #     publishLocation: 'pipeline'
 
 
-# <4.>........................ MARKDWON ...........................................
+# <3.>........................ MARKDWON ...........................................
 
     # - task: PowerShell@2
     #   displayName: Markdown Linting
@@ -76,24 +82,32 @@ stages:
     #     publishLocation: 'pipeline'
 
 
-# <5.>........................ YAMLLINT ...........................................
+# <4.>........................ YAMLLINT ...........................................
 
-    - task: PowerShell@2
-      displayName: Install yamllint
-      inputs:
-        targetType: 'inline'
-        script: |
-          python -m pip install --upgrade pip
-          python -m pip install yamllint
+    # - task: PowerShell@2
+    #   displayName: Install yamllint
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       python -m pip install --upgrade pip
+    #       python -m pip install yamllint
           
-    - task: PowerShell@2
-      displayName: YAML Linting
-      continueOnError: true
-      inputs:
-        targetType: 'inline'
-        script: |
-          cd $(System.DefaultWorkingDirectory)
-          yamllint . | Out-File -Encoding utf8 yamllint_report.txt
+    # - task: PowerShell@2
+    #   displayName: YAML Linting
+    #   continueOnError: true
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       cd $(System.DefaultWorkingDirectory)
+    #       yamllint . | Out-File -Encoding utf8 yamllint_report.txt
+
+
+# - stage: testing
+#   displayName: Unit Testing
+#   jobs:
+#   - job:
+#     steps:
+
 
 
 
