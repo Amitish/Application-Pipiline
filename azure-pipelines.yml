@@ -66,11 +66,8 @@ stages:
     #     artifact: 'markdown_report'
     #     publishLocation: 'pipeline'
 
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '3.x'
-        addToPath: true
-        architecture: 'x64'
+
+# <4>........................ YAMLLINT ...........................................
 
     - task: PowerShell@2
       displayName: Install yamllint
