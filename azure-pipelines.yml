@@ -72,9 +72,9 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          python --version
-          pip install yamllint
-
+          python -m pip install --upgrade pip
+          python -m pip install yamllint
+          
     - task: PowerShell@2
       displayName: YAML Linting
       continueOnError: true
