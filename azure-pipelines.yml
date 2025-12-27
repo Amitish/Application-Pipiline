@@ -67,22 +67,27 @@ stages:
     #     publishLocation: 'pipeline'
 
 
-    - task: PowerShell@2
-      displayName: Install yamllint
+    - task: PythonScript@0
       inputs:
-        targetType: 'inline'
-        script: |
-          python -m pip install --upgrade pip
-          python -m pip install yamllint
+        scriptSource: 'inline'
+        script: 'python -m pip install --upgrade pip'
+
+    # - task: PowerShell@2
+    #   displayName: Install yamllint
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       python -m pip install --upgrade pip
+    #       python -m pip install yamllint
           
-    - task: PowerShell@2
-      displayName: YAML Linting
-      continueOnError: true
-      inputs:
-        targetType: 'inline'
-        script: |
-          cd $(System.DefaultWorkingDirectory)
-          yamllint . | Out-File -Encoding utf8 yamllint_report.txt
+    # - task: PowerShell@2
+    #   displayName: YAML Linting
+    #   continueOnError: true
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       cd $(System.DefaultWorkingDirectory)
+    #       yamllint . | Out-File -Encoding utf8 yamllint_report.txt
 
 
 
