@@ -14,9 +14,11 @@ stages:
       continueOnError: true
       inputs:
         script: |
-          echo "Running Retire.js scan..."
+          echo "Installing dependencies..."
           npm install
-          npx retire --outputformat json --outputpath retire-report.json
+
+          echo "Running Retire.js scan..."
+          npx retire --npm --outputformat json --outputpath retire-report.json
 
 
 # # <1.>........................ SONARQUBE ...........................................
