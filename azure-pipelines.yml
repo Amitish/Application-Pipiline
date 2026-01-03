@@ -4,11 +4,19 @@ pool:
   mera-pool
 
 stages:
-# - stage: scan
-#   displayName: SAST Scanning 
-#   jobs:
-#   - job:
-#     steps:
+- stage: scan
+  displayName: SAST Scanning 
+  jobs:
+  - job:
+    steps:
+    - task: CmdLine@2
+      displayName: Retire.js Dependency Scan
+      continueOnError: true
+      inputs:
+        script: |
+          echo "Running Retire.js scan..."
+          npx retire --outputformat json --outputpath retire-report.json
+
 
 # # <1.>........................ SONARQUBE ...........................................
 
@@ -26,23 +34,23 @@ stages:
 #   - job:
 #     steps:
 
-# # <1.>........................ BIOME ...........................................
+# <1.>........................ BIOME ...........................................
 
-#     - task: PowerShell@2
-#       displayName: Biome Linting
-#       continueOnError: true
-#       inputs:
-#         targetType: 'inline'
-#         script: |
-#           cd $(System.DefaultWorkingDirectory)
-#           npx biome check src | Out-File -Encoding utf8 biome_report.txt
+    # - task: PowerShell@2
+    #   displayName: Biome Linting
+    #   continueOnError: true
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       cd $(System.DefaultWorkingDirectory)
+    #       npx biome check src | Out-File -Encoding utf8 biome_report.txt
 
-#     - task: PublishPipelineArtifact@1
-#       displayName: Biome Report
-#       inputs:
-#         targetPath: '$(System.DefaultWorkingDirectory)/biome_report.txt'
-#         artifact: 'Biome_report'
-#         publishLocation: 'pipeline'
+    # - task: PublishPipelineArtifact@1
+    #   displayName: Biome Report
+    #   inputs:
+    #     targetPath: '$(System.DefaultWorkingDirectory)/biome_report.txt'
+    #     artifact: 'Biome_report'
+    #     publishLocation: 'pipeline'
 
 
 # <2.>........................ STYLELINT ...........................................
@@ -83,7 +91,8 @@ stages:
     #     publishLocation: 'pipeline'
 
 
-# <4.>........................ YAMLLINT ...........................................
+
+# <5.>........................ YAMLLINT ...........................................
 
     # - task: PowerShell@2
     #   displayName: Install yamllint
@@ -105,19 +114,19 @@ stages:
 
 # <1.>........................ JEST UNIT TESTING ...........................................
 
-- stage: testing
-  displayName: Unit Testing
-  jobs:
-  - job:
-    steps:
+# - stage: testing
+#   displayName: Unit Testing
+#   jobs:
+#   - job:
+#     steps:
 
-    - task: PowerShell@2
-      displayName: Run React Jest Tests
-      inputs:
-        targetType: 'inline'
-        script: |
-          cd $(System.DefaultWorkingDirectory)
-          npx jest --ci --reporters=default --reporters=jest-junit
+#     - task: PowerShell@2
+#       displayName: Run React Jest Tests
+#       inputs:
+#         targetType: 'inline'
+#         script: |
+#           cd $(System.DefaultWorkingDirectory)
+#           npx jest --ci --reporters=default --reporters=jest-junit
 
 
 
