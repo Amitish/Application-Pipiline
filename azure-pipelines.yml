@@ -14,11 +14,11 @@ stages:
       continueOnError: true
       inputs:
         script: |
-          echo "Installing dependencies..."
-          npm install
+          echo "Installing dependencies (audit disabled)..."
+          npm install --no-audit --no-fund
 
           echo "Running Retire.js scan..."
-          npx retire --npm --outputformat json --outputpath retire-report.json
+          npx retire --npm --verbose --outputformat json --outputpath retire-report.json
 
 
 # # <1.>........................ SONARQUBE ...........................................
