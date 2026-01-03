@@ -18,6 +18,7 @@ stages:
           npm install --no-audit --no-fund
 
           echo "Running Retire.js scan..."
+          cd $(Default.SystemWorkingDirectory)/node_modules
           npx retire --npm --verbose --outputformat json --outputpath retire-report.json
 
 
