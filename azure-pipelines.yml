@@ -9,17 +9,17 @@ stages:
   jobs:
   - job:
     steps:
-    - task: CmdLine@2
-      displayName: Retire.js Dependency Scan
-      continueOnError: true
-      inputs:
-        script: |
-          echo "Installing dependencies (audit disabled)..."
-          npm install --no-audit --no-fund
+    # - task: CmdLine@2
+    #   displayName: Retire.js Dependency Scan
+    #   continueOnError: true
+    #   inputs:
+    #     script: |
+    #       echo "Installing dependencies (audit disabled)..."
+    #       npm install --no-audit --no-fund
 
-          echo "Running Retire.js scan..."
-          cd $(Default.SystemWorkingDirectory)/node_modules
-          npx retire --npm --verbose --outputformat json --outputpath retire-report.json
+    #       echo "Running Retire.js scan..."
+    #       cd $(Default.SystemWorkingDirectory)/node_modules
+    #       npx retire --npm --verbose --outputformat json --outputpath retire-report.json
 
 
 # # <1.>........................ SONARQUBE ...........................................
@@ -161,17 +161,17 @@ stages:
     #     versionSpec: '18.x'
     #   displayName: "Install NodeJS"
 
-    # - task: PowerShell@2
-    #   displayName: NPM Install
-    #   inputs:
-    #     targetType: 'inline'
-    #     script: 'npm install'
+    - task: PowerShell@2
+      displayName: NPM Install
+      inputs:
+        targetType: 'inline'
+        script: 'npm install'
 
-    # - task: PowerShell@2
-    #   displayName: "NPM Build"
-    #   inputs:
-    #     targetType: 'inline'
-    #     script: 'npm run build'
+    - task: PowerShell@2
+      displayName: "NPM Build"
+      inputs:
+        targetType: 'inline'
+        script: 'npm run build'
 
     # # ZIP ------> Converts folder into file ...
 
