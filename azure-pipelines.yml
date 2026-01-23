@@ -4,7 +4,7 @@ pool:
   mera-pool
 
 stages:
-- stage: scan
+- stage: CI
   displayName: SAST Scanning 
   jobs:
   - job:
@@ -209,3 +209,16 @@ stages:
         targetPath: '$(System.DefaultWorkingDirectory)/build'
         artifact: 'final-artifacts'
         publishLocation: 'pipeline'
+
+
+- stage: CD
+  displayName: CD
+  jobs:
+  - job:
+    steps: 
+    - task: DownloadPipelineArtifact@2
+      displayName: Download Artifacts
+      inputs:
+        buildType: 'current'
+        artifactName: 'final-artifacts'
+        targetPath: '$(System.DefaultWorkingDirectory)/build'
