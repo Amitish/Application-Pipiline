@@ -203,9 +203,11 @@ stages:
 
     # # We prefer Artifactory Hub since it provides versioning . . . Publish Pipeline Artifacts
 
-    # - task: PublishPipelineArtifact@1
-    #   displayName: Upload to Artifactory Hub
-    #   inputs:
-    #     targetPath: '$(System.DefaultWorkingDirectory)/build.zip'
-    #     artifact: 'final-artifacts'
-    #     publishLocation: 'pipeline'
+    - task: PublishPipelineArtifact@1
+      displayName: Upload to Artifactory Hub
+      inputs:
+        targetPath: '$(System.DefaultWorkingDirectory)/build.zip'
+        artifact: 'final-artifacts'
+        publishLocation: 'pipeline'
+
+        
