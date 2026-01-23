@@ -206,6 +206,6 @@ stages:
     - task: PublishPipelineArtifact@1
       displayName: Upload to Artifactory Hub
       inputs:
-        targetPath: '$(System.DefaultWorkingDirectory)/build.zip'
+        targetPath: '$(System.DefaultWorkingDirectory)/build'
         artifact: 'final-artifacts'
         publishLocation: 'pipeline'
