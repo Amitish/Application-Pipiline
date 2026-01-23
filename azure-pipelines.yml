@@ -209,5 +209,3 @@ stages:
         targetPath: '$(System.DefaultWorkingDirectory)/build.zip'
         artifact: 'final-artifacts'
         publishLocation: 'pipeline'
-
-        
